@@ -1333,7 +1333,7 @@ sub init_tools {
                 or return undef;
 
             chomp $root;
-            $root =~ s{^(.+)/[^/]*$}{$1};
+            $root =~ s{^(.+?)/.*$}{$1};
 
             system "$tar $xf$ar $tarfile";
             return $root if -d $root;
@@ -1355,7 +1355,7 @@ sub init_tools {
                 or return undef;
 
             chomp $root;
-            $root =~ s{^(.+)/[^/]*$}{$1};
+            $root =~ s{^(.+?)/.*$}{$1};
 
             system "$ar -dc $tarfile | $tar $x";
             return $root if -d $root;
@@ -1369,6 +1369,7 @@ sub init_tools {
             my $self = shift;
             my $t = Archive::Tar->new($_[0]);
             my $root = ($t->list_files)[0];
+            $root =~ s{^(.+?)/.*$}{$1};
             $t->extract;
             return -d $root ? $root : undef;
         };
